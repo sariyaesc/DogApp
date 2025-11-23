@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Imagen Aleatoria{% endblock %}
+
+{% block content %}
+    <h2>Imagen Aleatoria desde TheDogAPI</h2>
+    <p class="muted">Cada carga solicita una imagen aleatoria desde TheDogAPI.</p>
+
+    <div style="display:flex;align-items:center;justify-content:center;padding:18px">
+    {% if image_url %}
+        <img src="{{ image_url }}" style="max-width:640px;border-radius:10px;box-shadow:0 6px 18px rgba(2,6,23,0.08)">
+    {% else %}
+        <div class="muted">No se encontró imagen.</div>
+    {% endif %}
+    </div>
+{% endblock %}

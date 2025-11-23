@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Lista de Perros</title>
+		<style>
+			.dog-table { border-collapse: collapse; }
+			.dog-table, .dog-table th, .dog-table td { border: 1px solid #000; }
+			.dog-table th, .dog-table td { padding: 5px; }
+		</style>
+	</head>
+	{% extends 'base.html' %}
+
+	{% block title %}Listado de Perros{% endblock %}
+
+	{% block content %}
+		<h2>Perros Registrados</h2>
+		<p class="muted">Listado de perros guardados en la aplicación.</p>
+
+		<div style="margin:12px 0" class="center">
+			<a class="btn" href="/dogs/add/">Agregar nuevo perro</a>
+		</div>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Foto</th>
+					<th>Nombre</th>
+					<th>Edad</th>
+					<th>Raza</th>
+					<th>Color</th>
+					<th>Comida</th>
+					<th>Juguete</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for dog in dogs %}
+				<tr>
+					<td>
+						{% if dog.breed.image_url %}
+							<img class="thumb" src="{{ dog.breed.image_url }}" alt="{{ dog.breed.name }}">
+						{% else %}
+							<div style="width:72px;height:48px;border-radius:6px;background:#eef2f7;display:inline-block"></div>
+						{% endif %}
+					</td>
+					<td>{{ dog.name }}</td>
+					<td>{{ dog.age }}</td>
+					<td>
+						<a href="https://www.google.com/search?q={{ dog.breed.name|urlencode }}+dog" target="_blank">{{ dog.breed.name }}</a>
+					</td>
+					<td>{{ dog.color }}</td>
+					<td>{{ dog.favorite_food }}</td>
+					<td>{{ dog.favorite_toy }}</td>
+				</tr>
+				{% empty %}
+				<tr><td colspan="7" class="muted">No hay perros registrados todavía.</td></tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar Perro{% endblock %}
+
+{% block content %}
+    <h2>Agregar Perro</h2>
+    <p class="muted">Llena la información del perro. Al seleccionar una raza verás más detalles.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-grid">
+            <div class="form-row">
+                <label>Nombre</label>
+                {{ form.name }}
+            </div>
+            <div class="form-row">
+                <label>Edad</label>
+                {{ form.age }}
+            </div>
+
+            <div class="form-row full">
+                <label>Raza</label>
+                {{ form.breed }}
+            </div>
+
+            <div class="form-row">
+                <label>Género</label>
+                {{ form.gender }}
+            </div>
+            <div class="form-row">
+                <label>Color</label>
+                {{ form.color }}
+            </div>
+
+            <div class="form-row">
+                <label>Comida favorita</label>
+                {{ form.favorite_food }}
+            </div>
+            <div class="form-row">
+                <label>Juguete favorito</label>
+                {{ form.favorite_toy }}
+            </div>
+
+            <div class="form-row full center">
+                <button class="btn" type="submit">Guardar</button>
+                <a class="btn secondary" href="/dogs/">Cancelar</a>
+            </div>
+        </div>
+    </form>
+
+    <div id="breed-info" style="margin-top:18px; display:none;">
+        <h3 id="breed-name"></h3>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+            <img id="breed-image" src="" alt="" style="max-width:240px;border-radius:8px;display:none;"/>
+            <div>
+                <p id="breed-group" class="muted"></p>
+                <p id="breed-origin" class="muted"></p>
+                <p id="breed-life" class="muted"></p>
+                <p id="breed-temperament"></p>
+                <p id="breed-desc" class="muted"></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const breedSelect = document.querySelector('select[name="breed"]');
+    if(!breedSelect) return;
+
+    const infoDiv = document.getElementById('breed-info');
+    const nameEl = document.getElementById('breed-name');
+    const imageEl = document.getElementById('breed-image');
+    const groupEl = document.getElementById('breed-group');
+    const originEl = document.getElementById('breed-origin');
+    const tempEl = document.getElementById('breed-temperament');
+    const lifeEl = document.getElementById('breed-life');
+    const descEl = document.getElementById('breed-desc');
+
+    async function fetchBreed(pk){
+        try{
+            const res = await fetch(`/dogs/breed/${pk}/`);
+            if(!res.ok) throw new Error('Not found');
+            const data = await res.json();
+            nameEl.textContent = data.name || '';
+            if(data.image_url){
+                imageEl.src = data.image_url;
+                imageEl.style.display = '';
+            } else {
+                imageEl.style.display = 'none';
+            }
+            groupEl.textContent = data.breed_group ? ('Grupo: ' + data.breed_group) : '';
+            originEl.textContent = data.origin ? ('Origen: ' + data.origin) : '';
+            tempEl.textContent = data.temperament ? ('Temperamento: ' + data.temperament) : '';
+            lifeEl.textContent = data.life_span ? ('Esperanza de vida: ' + data.life_span) : '';
+            descEl.textContent = data.description || '';
+            infoDiv.style.display = '';
+        }catch(e){
+            infoDiv.style.display = 'none';
+        }
+    }
+
+    breedSelect.addEventListener('change', function(){
+        const val = this.value;
+        if(!val) { infoDiv.style.display = 'none'; return; }
+        fetchBreed(val);
+    });
+
+    if(breedSelect.value){
+        fetchBreed(breedSelect.value);
+    }
+});
+</script>
+{% endblock %}

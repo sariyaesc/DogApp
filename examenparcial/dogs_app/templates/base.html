@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{% block title %}Perros - Examen{% endblock %}</title>
+        <style>
+            :root{
+                --bg:#f6f8fb; --card:#ffffff; --muted:#6b7280; --accent:#2563eb; --accent-2:#06b6d4;
+                --radius:10px; --max:980px;
+            }
+            /* Normalize box-sizing and base styles so form fields align consistently */
+            *, *::before, *::after { box-sizing: border-box; }
+            html,body{height:100%;margin:0;background:var(--bg);font-family:Segoe UI, Roboto, Arial, sans-serif;color:#111827}
+            .container{max-width:var(--max);margin:28px auto;padding:18px}
+            .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+            .brand{display:flex;align-items:center;gap:12px}
+            .logo{width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+            nav a{color:var(--accent);text-decoration:none;margin-left:12px}
+            .card{background:var(--card);padding:18px;border-radius:var(--radius);box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+            h1{margin:0;font-size:20px}
+            .muted{color:var(--muted);font-size:13px}
+            .actions{display:flex;gap:8px}
+            .btn{background:var(--accent);color:white;padding:8px 12px;border-radius:8px;text-decoration:none;display:inline-block}
+            .btn.secondary{background:transparent;color:var(--accent);border:1px solid rgba(37,99,235,0.12)}
+            table{width:100%;border-collapse:collapse}
+            thead th{ text-align:left;padding:10px 12px;background:transparent;color:var(--muted);font-weight:600 }
+            tbody td{padding:10px 12px;border-top:1px solid #eef2f7;vertical-align:middle}
+            .thumb{width:72px;height:48px;object-fit:cover;border-radius:6px}
+            .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+            .form-row{margin-bottom:10px}
+            label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+            /* Normalize form controls so they all match size and spacing */
+            input[type=text], select, input[type=number], textarea, .form-row select, .form-row input { 
+                width:100%;
+                padding:10px 12px;
+                border:1px solid #e6eef6;
+                border-radius:8px;
+                min-height:40px;
+                line-height:1.2;
+                font-size:14px;
+                background:#fff;
+            }
+            select { appearance: none; -webkit-appearance: none; -moz-appearance: none; background-image: linear-gradient(45deg, transparent 50%, rgba(0,0,0,0.15) 50%), linear-gradient(135deg, rgba(0,0,0,0.15) 50%, transparent 50%); background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px); background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right:36px; }
+            textarea{min-height:70px}
+            .full{grid-column:1 / -1}
+            .center{display:flex;gap:8px;align-items:center}
+            @media(max-width:720px){.form-grid{grid-template-columns:1fr}.brand h1{font-size:16px}.thumb{width:56px;height:40px}}
+        </style>
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        <div class="container">
+            <div class="topbar">
+                <div class="brand">
+                    <div class="logo">🐶</div>
+                    <div>
+                        <h1>Perros - Examen</h1>
+                        <div class="muted">Gestión simple de perros y razas</div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <a class="btn" href="/dogs/">Listado</a>
+                    <a class="btn secondary" href="/dogs/add/">Agregar</a>
+                    <a class="btn secondary" href="/dogs/random-image/">Imagen aleatoria</a>
+                </div>
+            </div>
+
+            <div class="card">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        {% block scripts %}{% endblock %}
+    </body>
+</html>
